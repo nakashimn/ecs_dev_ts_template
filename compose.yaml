@@ -1,0 +1,17 @@
+services:
+  ecs_dev_ts_template:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      target: dev
+      args:
+        GIT_USERNAME: ${GIT_USERNAME}
+        GIT_EMAIL_ADDRESS: ${GIT_EMAIL_ADDRESS}
+    container_name: ecs_dev_ts_template
+    hostname: ecs_dev_ts_template
+    shm_size: '4gb'
+    volumes:
+      - $PWD/:/workspace:cached
+    environment:
+      TZ: Asia/Tokyo
+    tty: true

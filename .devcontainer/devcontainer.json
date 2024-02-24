@@ -1,0 +1,16 @@
+{
+	"name": "ecs_dev_ts_template",
+	"dockerComposeFile": "../compose.yaml",
+	"service": "ecs_dev_ts_template",
+	"workspaceFolder": "/workspace",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"wallabyjs.quokka-vscode",
+				"donjayamanne.githistory",
+				"eamodio.gitlens",
+				"ryuta46.multi-command"
+			]
+		}
+	}
+}
