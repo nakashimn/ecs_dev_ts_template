@@ -36,6 +36,22 @@ RUN git config --global user.name ${GIT_USERNAME}
 RUN git config --global user.email ${GIT_EMAIL_ADDRESS}
 
 ################################################################################
+# testing
+################################################################################
+FROM node:18.19.0 as test
+
+ENV TZ Asia/Tokyo
+
+COPY --from=builder /usr/local/bin /usr/local/bin
+COPY --from=builder /usr/local/lib /usr/local/lib
+RUN npm install --save-dev jest ts-jest @types/jest typescript
+
+COPY ./app/src /app/src
+COPY ./app/assets /app/assets
+COPY ./app/test /app/test
+CMD ["npm", "test"]
+
+################################################################################
 # production
 ################################################################################
 FROM node:18.19.0 as prod
@@ -48,5 +64,6 @@ COPY --from=builder /npm/node_modules /npm/node_modules
 
 RUN npm config set prefix "/npm/"
 
-COPY ./app /workspace/app
+COPY ./app/src /app/src
+COPY ./app/assets /app/assets
 CMD ["echo", "app is running correctly."]
