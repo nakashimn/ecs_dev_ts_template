@@ -17,9 +17,6 @@ RUN npm install --prefix "/npm/"
 ################################################################################
 FROM node:18.19.0 as dev
 
-ARG GIT_USERNAME
-ARG GIT_EMAIL_ADDRESS
-
 COPY --from=builder /usr/local/bin /usr/local/bin
 COPY --from=builder /usr/local/lib /usr/local/lib
 COPY --from=builder /npm/node_modules /npm/node_modules
@@ -32,8 +29,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
 RUN npm config set prefix "/npm/"
 
 RUN git config --global --add safe.directory /workspace
-RUN git config --global user.name ${GIT_USERNAME}
-RUN git config --global user.email ${GIT_EMAIL_ADDRESS}
 
 ################################################################################
 # testing
