@@ -7,9 +7,7 @@
 		"vscode": {
 			"extensions": [
 				"wallabyjs.quokka-vscode",
-				"donjayamanne.githistory",
-				"eamodio.gitlens",
-				"ryuta46.multi-command"
+				"formulahendry.code-runner"
 			]
 		}
 	}
