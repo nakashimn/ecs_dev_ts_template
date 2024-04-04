@@ -9,6 +9,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
     tzdata
 
 WORKDIR /npm/
+RUN npm install -g typescript ts-node
 COPY ./package.json /npm/package.json
 RUN npm config set prefix "/npm/"
 RUN npm install --prefix "/npm/"
