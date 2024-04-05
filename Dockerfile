@@ -10,9 +10,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
 
 WORKDIR /npm/
 RUN npm install -g typescript ts-node
-COPY ./package.json /npm/package.json
-RUN npm config set prefix "/npm/"
-RUN npm install --prefix "/npm/"
+COPY ./package*.json /npm/
+RUN npm install
 
 ################################################################################
 # development
@@ -24,14 +23,12 @@ COPY --from=builder /usr/lib /usr/lib
 COPY --from=builder /usr/share /usr/share
 COPY --from=builder /usr/local/bin /usr/local/bin
 COPY --from=builder /usr/local/lib /usr/local/lib
-COPY --from=builder /npm/node_modules /npm/node_modules
+COPY --from=builder /npm/node_modules /workspace/node_modules
 
 RUN apt update
 RUN DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
     ca-certificates \
     git
-
-RUN npm config set prefix "/npm/"
 
 RUN git config --global --add safe.directory /workspace
 
@@ -47,6 +44,7 @@ COPY --from=builder /usr/lib /usr/lib
 COPY --from=builder /usr/share /usr/share
 COPY --from=builder /usr/local/bin /usr/local/bin
 COPY --from=builder /usr/local/lib /usr/local/lib
+COPY --from=builder /npm/node_modules /app/node_modules
 RUN npm install --save-dev jest ts-jest @types/jest typescript
 
 COPY ./app/src /app/src
@@ -66,10 +64,9 @@ COPY --from=builder /usr/lib /usr/lib
 COPY --from=builder /usr/share /usr/share
 COPY --from=builder /usr/local/bin /usr/local/bin
 COPY --from=builder /usr/local/lib /usr/local/lib
-COPY --from=builder /npm/node_modules /npm/node_modules
+COPY --from=builder /npm/node_modules /app/node_modules
 
-RUN npm config set prefix "/npm/"
-
+WORKDIR /app/
 COPY ./app/src /app/src
 COPY ./app/assets /app/assets
 CMD ["echo", "app is running correctly."]

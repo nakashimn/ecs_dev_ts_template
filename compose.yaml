@@ -8,7 +8,8 @@ services:
     hostname: ecs_dev_ts_template
     shm_size: '4gb'
     volumes:
-      - $PWD/:/workspace:cached
+      - ./:/workspace:cached
+      - node_modules:/workspace/node_modules
     environment:
       GIT_AUTHOR_NAME: ${GIT_USERNAME}
       GIT_COMMITTER_NAME: ${GIT_USERNAME}
@@ -16,3 +17,6 @@ services:
       GIT_COMMITTER_EMAIL: ${GIT_EMAIL_ADDRESS}
       TZ: Asia/Tokyo
     tty: true
+
+volumes:
+  node_modules:
