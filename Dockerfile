@@ -1,7 +1,7 @@
 ################################################################################
 # builder
 ################################################################################
-FROM node:18.19.0 as builder
+FROM node:20.12.2 as builder
 
 RUN apt update
 RUN DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
@@ -16,7 +16,7 @@ RUN npm install
 ################################################################################
 # development
 ################################################################################
-FROM node:18.19.0 as dev
+FROM node:20.12.2 as dev
 
 COPY --from=builder /usr/bin /usr/bin
 COPY --from=builder /usr/lib /usr/lib
@@ -35,7 +35,7 @@ RUN git config --global --add safe.directory /workspace
 ################################################################################
 # testing
 ################################################################################
-FROM node:18.19.0 as test
+FROM node:20.12.2 as test
 
 ENV TZ Asia/Tokyo
 
@@ -45,7 +45,7 @@ COPY --from=builder /usr/share /usr/share
 COPY --from=builder /usr/local/bin /usr/local/bin
 COPY --from=builder /usr/local/lib /usr/local/lib
 COPY --from=builder /npm/node_modules /app/node_modules
-RUN npm install --save-dev jest ts-jest @types/jest typescript
+RUN npm install -g jest ts-jest @types/jest
 
 COPY ./app/src /app/src
 COPY ./app/assets /app/assets
@@ -55,7 +55,7 @@ CMD ["npm", "test"]
 ################################################################################
 # production
 ################################################################################
-FROM node:18.19.0 as prod
+FROM node:20.12.2 as prod
 
 ENV TZ Asia/Tokyo
 
